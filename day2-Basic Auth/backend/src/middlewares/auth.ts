@@ -1,7 +1,7 @@
 const db = require("../models");
 const atob = require("atob");
 import { Request, Response } from "express";
-import ApiError from "../classes/ApiError";
+const ApiError = require("../classes/ApiError");
 import { IRequest } from "../controllers/auth";
 
 exports.basicAuthMiddleware = async (
@@ -13,10 +13,8 @@ exports.basicAuthMiddleware = async (
 		return next(new ApiError(401, "Unauthorized"));
 
 	const decoded = atob(req.headers.authorization.split(" ")[1]);
-	const { email, password } = decoded.split(":");
-
+	const [email, password] = decoded.split(":");
 	const user = await db.User.findByCredentials(email, password);
-
 	if (!user) return next(new ApiError(401, "Invalid Credentials"));
 
 	req.user = user;

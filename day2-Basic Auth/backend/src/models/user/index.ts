@@ -2,14 +2,15 @@ import { model, Schema, Model, Document } from "mongoose";
 
 const bcrypt = require("bcrypt");
 
+type findByCredentialsType = (email: string, password: string) => IUser | null;
 export interface IUser extends Document {
 	firstName: string;
 	lastName: string;
 	email: string;
 	password: string;
 	role: number;
+	findByCredentials: findByCredentialsType;
 }
-
 const UserSchema: Schema = new Schema(
 	{
 		firstName: { type: String, required: true },

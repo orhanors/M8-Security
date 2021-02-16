@@ -6,10 +6,15 @@ const {
 	adminOnlyMiddleware,
 } = require("../../middlewares/auth");
 
-const { getAllUsers } = require("../../middlewares/users");
+const { getAllUsers } = require("../../controllers/users");
+const {
+	signupSchema,
+	loginSchema,
+	validateBody,
+} = require("../../middlewares/validator");
 
-router.post("/auth/signup", signup);
-router.post("/auth/login", basicAuthMiddleware, login);
+router.post("/auth/signup", validateBody(signupSchema), signup);
+router.post("/auth/login", validateBody(loginSchema), login);
 
 router.get("/", basicAuthMiddleware, adminOnlyMiddleware, getAllUsers);
 

@@ -1,13 +1,14 @@
-class ApiError extends Error {
+class ApiError {
 	httpStatusCode: number;
+	message: string;
 
 	constructor(
 		httpStatusCode: number = 500,
 		message: string = "An error occured"
 	) {
-		super(message);
+		this.message = message;
 		this.httpStatusCode = httpStatusCode;
 	}
 }
 
-export default ApiError;
+module.exports = ApiError;
