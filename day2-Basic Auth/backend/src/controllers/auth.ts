@@ -29,7 +29,10 @@ exports.signup = async (req: Request, res: Response, next: Function) => {
 
 exports.login = async (req: IRequest, res: Response, next: Function) => {
 	try {
-		res.send(req.user);
+		const { email, password } = req.body;
+		const user = await db.User.findByCredentials(email, password);
+		if (!user) return next(new ApiError(400, "Invalid Credentials"));
+		res.status(201).send(user);
 	} catch (error) {
 		console.log("Login error: ", error);
 		next(error);
